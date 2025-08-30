@@ -100,7 +100,8 @@ const calculateTrendingScore = (project: Project) => {
 export default function ProjectSearch({ 
   projects,
   onFilteredProjectsChange,
-  urlFilters = {}
+  urlFilters = {},
+  disableUrlUpdate = false
 }: {
   projects: Project[];
   onFilteredProjectsChange: (projects: Project[]) => void;
@@ -113,6 +114,7 @@ export default function ProjectSearch({
     status?: string[];
     sort?: string;
   };
+  disableUrlUpdate?: boolean;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -146,6 +148,11 @@ export default function ProjectSearch({
 
   // Function to update URL parameters
   const updateURL = (newFilters: any) => {
+    // Don't update URL if disabled
+    if (disableUrlUpdate) {
+      return;
+    }
+    
     const params = new URLSearchParams();
     
     // Add search term
